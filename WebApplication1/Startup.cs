@@ -28,7 +28,8 @@ namespace WebApplication1
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-
+            // Register the Swagger services
+            services.AddSwaggerDocument();
 
             services.AddDbContext<TestDBEntities>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")
                 , b => b.MigrationsAssembly("DAL")
@@ -54,6 +55,11 @@ namespace WebApplication1
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            // Register the Swagger generator and the Swagger UI middlewares
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
@@ -80,6 +86,8 @@ namespace WebApplication1
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+           
         }
     }
 }
